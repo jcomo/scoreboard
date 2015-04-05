@@ -11,17 +11,6 @@ var upcomingGame = UpcomingGame{
 	time: time.Date(2015, 4, 4, 19, 5, 0, 0, time.Local),
 }
 
-var inProgressGame = InProgressGame{
-	home:   newTeamStatus("WSH", 5),
-	away:   newTeamStatus("PHI", 2),
-	inning: topInning(7),
-}
-
-var finishedGame = FinishedGame{
-	home: newTeamStatus("OAK", 8),
-	away: newTeamStatus("LAA", 3),
-}
-
 func TestStateForUpcomingGame(t *testing.T) {
 	assertEqual(t, "BOS vs NYY 7:05PM", upcomingGame.State())
 }
@@ -34,6 +23,12 @@ func TestAwayTeamForUpcomingGame(t *testing.T) {
 	assertEqual(t, "BOS", upcomingGame.AwayTeam())
 }
 
+var inProgressGame = InProgressGame{
+	home:   newTeamStatus("WSH", 5),
+	away:   newTeamStatus("PHI", 2),
+	inning: topInning(7),
+}
+
 func TestStateForGameInProgress(t *testing.T) {
 	assertEqual(t, "PHI 2 - 5 WSH T7", inProgressGame.State())
 }
@@ -44,6 +39,11 @@ func TestHomeTeamForInProgressGame(t *testing.T) {
 
 func TestAwayTeamForInProgressGame(t *testing.T) {
 	assertEqual(t, "PHI", inProgressGame.AwayTeam())
+}
+
+var finishedGame = FinishedGame{
+	home: newTeamStatus("OAK", 8),
+	away: newTeamStatus("LAA", 3),
 }
 
 func TestStateForFinishedGame(t *testing.T) {
