@@ -5,10 +5,15 @@ import (
 	"time"
 )
 
-func TestParseGameTime(t *testing.T) {
-	easternLoc, _ := time.LoadLocation("America/New_York")
+func makeGameTime(gt string) time.Time {
+    easternLoc, _ := time.LoadLocation("America/New_York")
+    t, _ := time.ParseInLocation("3:04PM", gt, easternLoc)
+    return t
+}
 
-	localTime := time.Date(2015, 1, 1, 19, 5, 0, 0, easternLoc).Local()
+
+func TestParseGameTime(t *testing.T) {
+	localTime := makeGameTime("7:05PM").Local()
 	gameTime := parseGameTime("7:05PM")
 
 	assertEqual(t, localTime.Hour(), gameTime.Hour())
