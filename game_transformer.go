@@ -4,6 +4,18 @@ import (
 	"encoding/json"
 )
 
+type rawScoreboard struct {
+	Data scoreboardData
+}
+
+type scoreboardData struct {
+	Games scoreboardGames
+}
+
+type scoreboardGames struct {
+	Game json.RawMessage
+}
+
 type RawGame struct {
 	Time      string
 	AmOrPm    string    `json:"ampm"`

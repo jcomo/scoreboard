@@ -3,22 +3,15 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"path/filepath"
 	"time"
 )
 
-type rawScoreboard struct {
-	Data scoreboardData
-}
-
-type scoreboardData struct {
-	Games scoreboardGames
-}
-
-type scoreboardGames struct {
-	Game json.RawMessage
+type Client interface {
+	FetchGames(time.Time) ([]Game, error)
 }
 
 type HttpClient struct {
@@ -39,18 +32,7 @@ func (c *HttpClient) FetchGames(day time.Time) ([]Game, error) {
 
 	defer resp.Body.Close()
 
-	var scoreboard rawScoreboard
-	err = json.NewDecoder(resp.Body).Decode(&scoreboard)
-	if err != nil {
-		return nil, err
-	}
-
-	rgs, err := unmarshalGames(scoreboard.Data.Games.Game)
-	if err != nil {
-		return nil, err
-	}
-
-	return GamesFromRaw(rgs), nil
+	return gamesFromReader(resp.Body)
 }
 
 func (c *HttpClient) urlForDay(day time.Time) string {
@@ -70,7 +52,6 @@ func DefaultFixtureClient() *FixtureClient {
 }
 
 func (c *FixtureClient) FetchGames(day time.Time) ([]Game, error) {
-	fmt.Println(c.filePathForDay(day))
 	f, err := os.Open(c.filePathForDay(day))
 	if err != nil {
 		return nil, err
@@ -78,8 +59,19 @@ func (c *FixtureClient) FetchGames(day time.Time) ([]Game, error) {
 
 	defer f.Close()
 
+	return gamesFromReader(f)
+}
+
+func (c *FixtureClient) filePathForDay(day time.Time) string {
+	pathForDay := fmt.Sprintf("%d_%02d_%02d.json",
+		day.Year(), day.Month(), day.Day())
+
+	return filepath.Join(c.BaseDir, pathForDay)
+}
+
+func gamesFromReader(f io.Reader) ([]Game, error) {
 	var scoreboard rawScoreboard
-	err = json.NewDecoder(f).Decode(&scoreboard)
+	err := json.NewDecoder(f).Decode(&scoreboard)
 	if err != nil {
 		return nil, err
 	}
@@ -90,11 +82,4 @@ func (c *FixtureClient) FetchGames(day time.Time) ([]Game, error) {
 	}
 
 	return GamesFromRaw(rgs), nil
-}
-
-func (c *FixtureClient) filePathForDay(day time.Time) string {
-	pathForDay := fmt.Sprintf("%d_%02d_%02d.json",
-		day.Year(), day.Month(), day.Day())
-
-	return filepath.Join(c.BaseDir, pathForDay)
 }
