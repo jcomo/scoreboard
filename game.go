@@ -38,8 +38,7 @@ type FinishedGame struct {
 
 func (g FinishedGame) State() string {
 	return fmt.Sprintf("%s %d - %d %s F",
-		g.away.abbrev, g.away.score,
-		g.home.score, g.home.abbrev)
+		g.away.abbrev, g.away.score, g.home.score, g.home.abbrev)
 }
 
 type teamStatus struct {
