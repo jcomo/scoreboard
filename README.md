@@ -10,6 +10,10 @@ $ go get github.com/jcomo/scoreboard
 $ scoreboard
 ```
 
+It may be necessary to run `go install` from within the directory depending on your PATH
+configuration.
+
+
 ## Usage
 The basic usage of scoreboard is to run the program with no arguments
 
