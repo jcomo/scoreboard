@@ -45,10 +45,8 @@ func TestRawGameUnmarshalling(t *testing.T) {
 
 	got := RawGame{}
 	err := json.Unmarshal([]byte(rgData), &got)
-	if err != nil {
-		panic("Could not unmarshal raw game data!")
-	}
 
+	assertNoError(t, err)
 	assertEqual(t, want, got)
 }
 
@@ -149,7 +147,7 @@ func TestTransformRawInProgressGameTopInning(t *testing.T) {
 		inning: topInning(7),
 	}
 
-	assertEqual(t, want.State(), got.State())
+	assertEqual(t, want, got)
 }
 
 func TestTransformRawInProgressGameBottomInning(t *testing.T) {
@@ -176,7 +174,7 @@ func TestTransformRawInProgressGameBottomInning(t *testing.T) {
 		inning: bottomInning(7),
 	}
 
-	assertEqual(t, want.State(), got.State())
+	assertEqual(t, want, got)
 }
 
 func TestTransformRawFinishedGame(t *testing.T) {
@@ -200,5 +198,5 @@ func TestTransformRawFinishedGame(t *testing.T) {
 		away: newTeamStatus("BOS", 5),
 	}
 
-	assertEqual(t, want.State(), got.State())
+	assertEqual(t, want, got)
 }
