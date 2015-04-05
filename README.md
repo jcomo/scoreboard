@@ -1,6 +1,15 @@
 # Scoreboard
 A simple CLI to retrieve MLB scores and upcoming games.
 
+## Installation
+
+To build and install scoreboard, you must have Go version >= 1.3.2 on your system.
+
+```sh
+$ go get github.com/jcomo/scoreboard
+$ scoreboard
+```
+
 ## Usage
 The basic usage of scoreboard is to run the program with no arguments
 
@@ -33,6 +42,8 @@ game in the schedule instead.
 
 When a team is specified, the upcoming game will be displayed with respect to
 the team.
+
+This behavior is not yet implemented.
 
 For example,
 
