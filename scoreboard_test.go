@@ -10,6 +10,12 @@ func assertEqual(t *testing.T, want, got interface{}) {
 	}
 }
 
+func assertNoError(t *testing.T, err error) {
+	if err != nil {
+		t.Errorf("Unexpected error: %v", err)
+	}
+}
+
 // TODO: flesh out this test
 func TestGet(t *testing.T) {
 	sb := NewScoreboard()

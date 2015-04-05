@@ -1,5 +1,9 @@
 package main
 
+import (
+	"encoding/json"
+)
+
 type RawGame struct {
 	Time      string
 	AmOrPm    string    `json:"ampm"`
@@ -22,6 +26,29 @@ type gameState struct {
 	State       string `json:"status"`
 	Inning      string
 	InningState string `json:"inning_state"`
+}
+
+// Need a special helper to unmarshal games because if there is a list of
+// games, it is returned as an array, but if there is only one game it is
+// and object.
+func unmarshalGames(gd json.RawMessage) ([]RawGame, error) {
+	var gs []RawGame
+
+	e := json.Unmarshal(gd, &gs)
+	if e != nil {
+		// Only one game -- unmarshal as one game specifically
+		var g RawGame
+
+		e = json.Unmarshal(gd, &g)
+		if e != nil {
+			return nil, e
+		}
+
+		gs = make([]RawGame, 1)
+		gs[0] = g
+	}
+
+	return gs, nil
 }
 
 func GamesFromRaw(rgs []RawGame) []Game {
