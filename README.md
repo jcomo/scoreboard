@@ -34,6 +34,6 @@ the team.
 For example,
 
 ```
-NYY vs BOS 7:05PM
-OAK @ NYY 1:05PM
+BOS vs NYY 7:05PM
+NYY @ OAK 1:05PM
 ```
