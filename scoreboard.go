@@ -29,5 +29,16 @@ func (sb *Scoreboard) Get(day time.Time) ([]string, error) {
 }
 
 func (sb *Scoreboard) GetTeam(day time.Time, team string) (string, error) {
-	return "WSH 3 - 4 NYY F", nil
+	games, err := sb.Client.FetchGames(day)
+	if err != nil {
+		return "", err
+	}
+
+	for _, g := range games {
+		if g.HomeTeam() == team || g.AwayTeam() == team {
+			return g.State(), nil
+		}
+	}
+
+	return "", nil
 }
