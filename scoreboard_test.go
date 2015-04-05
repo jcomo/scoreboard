@@ -67,3 +67,14 @@ func TestGetTeam(t *testing.T) {
 	assertNoError(t, err)
 	assertEqual(t, want, got)
 }
+
+func TestGetTeamForNoTeamFound(t *testing.T) {
+	sb := NewScoreboard(DefaultFixtureClient())
+
+	want := "No games for BAD"
+	got, err := sb.GetTeam(testDate, "BAD")
+
+	assertNoError(t, err)
+	assertEqual(t, want, got)
+
+}

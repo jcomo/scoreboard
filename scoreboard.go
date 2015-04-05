@@ -40,5 +40,5 @@ func (sb *Scoreboard) GetTeam(day time.Time, team string) (string, error) {
 		}
 	}
 
-	return "", nil
+	return "No games for " + team, nil
 }
