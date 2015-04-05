@@ -1,9 +1,18 @@
 package main
 
 import (
-    "fmt"
+	"fmt"
+	"time"
 )
 
 func main() {
-    fmt.Println("Hello!")
+	sb := NewScoreboard(DefaultHttpClient())
+	games, err := sb.Get(time.Now())
+	if err != nil {
+		fmt.Println("ERROR!")
+	} else {
+		for _, g := range games {
+			fmt.Println(g)
+		}
+	}
 }
