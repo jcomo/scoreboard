@@ -24,6 +24,15 @@ type gameState struct {
 	InningState string `json:"inning_state"`
 }
 
+func GamesFromRaw(rgs []RawGame) []Game {
+	gs := make([]Game, len(rgs), len(rgs))
+	for i, rg := range rgs {
+		gs[i] = GameFromRaw(rg)
+	}
+
+	return gs
+}
+
 func GameFromRaw(rg RawGame) Game {
 	if rg.GameState.State == "Preview" {
 		return upcomingGameFromRaw(rg)
