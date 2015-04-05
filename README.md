@@ -12,8 +12,11 @@ SF 4 - 1 OAK T9
 # ...
 ```
 
-You may also specify a team using the team flag. The specified team should be
-the abbreviation (eg. NYY). This is case insensitive.
+You may also specify a team using the team flag to get information about one
+team only.
+
+The specified team should be the abbreviation (eg. NYY). This is case
+insensitive.
 
 ```sh
 $ scoreboard -team nyy
