@@ -7,6 +7,8 @@ import (
 
 type Game interface {
 	State() string
+	HomeTeam() string
+	AwayTeam() string
 }
 
 type UpcomingGame struct {
@@ -20,6 +22,14 @@ func (g UpcomingGame) State() string {
 		g.time.Local().Format("3:04PM"))
 }
 
+func (g UpcomingGame) HomeTeam() string {
+	return g.home
+}
+
+func (g UpcomingGame) AwayTeam() string {
+	return g.away
+}
+
 type InProgressGame struct {
 	home   teamStatus
 	away   teamStatus
@@ -29,6 +39,14 @@ type InProgressGame struct {
 func (g InProgressGame) State() string {
 	return fmt.Sprintf("%s %d - %d %s %s",
 		g.away.abbrev, g.away.score, g.home.score, g.home.abbrev, g.inning)
+}
+
+func (g InProgressGame) HomeTeam() string {
+	return g.home.teamName()
+}
+
+func (g InProgressGame) AwayTeam() string {
+	return g.away.teamName()
 }
 
 type FinishedGame struct {
@@ -41,9 +59,21 @@ func (g FinishedGame) State() string {
 		g.away.abbrev, g.away.score, g.home.score, g.home.abbrev)
 }
 
+func (g FinishedGame) HomeTeam() string {
+	return g.home.teamName()
+}
+
+func (g FinishedGame) AwayTeam() string {
+	return g.away.teamName()
+}
+
 type teamStatus struct {
 	abbrev string
 	score  int
+}
+
+func (ts teamStatus) teamName() string {
+	return ts.abbrev
 }
 
 func newTeamStatus(abbrev string, score int) teamStatus {

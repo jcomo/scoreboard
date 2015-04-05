@@ -51,8 +51,19 @@ func TestGet(t *testing.T) {
 
 func TestGetTeam(t *testing.T) {
 	sb := NewScoreboard(DefaultFixtureClient())
-	got := sb.GetTeam("NYY")
 
 	want := "WSH 3 - 4 NYY F"
+	got, err := sb.GetTeam(testDate, "NYY")
+	assertNoError(t, err)
+	assertEqual(t, want, got)
+
+	want = "LAA 6 - 5 LAD T8"
+	got, err = sb.GetTeam(testDate, "LAA")
+	assertNoError(t, err)
+	assertEqual(t, want, got)
+
+	want = "LAA 6 - 5 LAD T8"
+	got, err = sb.GetTeam(testDate, "LAD")
+	assertNoError(t, err)
 	assertEqual(t, want, got)
 }

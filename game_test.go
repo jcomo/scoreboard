@@ -5,42 +5,57 @@ import (
 	"time"
 )
 
+var upcomingGame = UpcomingGame{
+	home: "NYY",
+	away: "BOS",
+	time: time.Date(2015, 4, 4, 19, 5, 0, 0, time.Local),
+}
+
+var inProgressGame = InProgressGame{
+	home:   newTeamStatus("WSH", 5),
+	away:   newTeamStatus("PHI", 2),
+	inning: topInning(7),
+}
+
+var finishedGame = FinishedGame{
+	home: newTeamStatus("OAK", 8),
+	away: newTeamStatus("LAA", 3),
+}
+
 func TestStateForUpcomingGame(t *testing.T) {
-	g := UpcomingGame{
-		home: "NYY",
-		away: "BOS",
-		time: time.Date(2015, time.January, 1, 19, 5, 0, 0, time.Local),
-	}
+	assertEqual(t, "BOS vs NYY 7:05PM", upcomingGame.State())
+}
 
-	want := "BOS vs NYY 7:05PM"
-	got := g.State()
+func TestHomeTeamForUpcomingGame(t *testing.T) {
+	assertEqual(t, "NYY", upcomingGame.HomeTeam())
+}
 
-	assertEqual(t, want, got)
+func TestAwayTeamForUpcomingGame(t *testing.T) {
+	assertEqual(t, "BOS", upcomingGame.AwayTeam())
 }
 
 func TestStateForGameInProgress(t *testing.T) {
-	g := InProgressGame{
-		home:   newTeamStatus("NYY", 5),
-		away:   newTeamStatus("BOS", 2),
-		inning: topInning(7),
-	}
+	assertEqual(t, "PHI 2 - 5 WSH T7", inProgressGame.State())
+}
 
-	want := "BOS 2 - 5 NYY T7"
-	got := g.State()
+func TestHomeTeamForInProgressGame(t *testing.T) {
+	assertEqual(t, "WSH", inProgressGame.HomeTeam())
+}
 
-	assertEqual(t, want, got)
+func TestAwayTeamForInProgressGame(t *testing.T) {
+	assertEqual(t, "PHI", inProgressGame.AwayTeam())
 }
 
 func TestStateForFinishedGame(t *testing.T) {
-	g := FinishedGame{
-		home: newTeamStatus("NYY", 8),
-		away: newTeamStatus("BOS", 3),
-	}
+	assertEqual(t, "LAA 3 - 8 OAK F", finishedGame.State())
+}
 
-	want := "BOS 3 - 8 NYY F"
-	got := g.State()
+func TestHomeTeamForFinishedGame(t *testing.T) {
+	assertEqual(t, "OAK", finishedGame.HomeTeam())
+}
 
-	assertEqual(t, want, got)
+func TestAwayTeamForFinishedGame(t *testing.T) {
+	assertEqual(t, "LAA", finishedGame.AwayTeam())
 }
 
 func TestInningString(t *testing.T) {

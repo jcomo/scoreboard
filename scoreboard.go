@@ -28,6 +28,6 @@ func (sb *Scoreboard) Get(day time.Time) ([]string, error) {
 	return gameStates, nil
 }
 
-func (sb *Scoreboard) GetTeam(team string) string {
-	return "WSH 3 - 4 NYY F"
+func (sb *Scoreboard) GetTeam(day time.Time, team string) (string, error) {
+	return "WSH 3 - 4 NYY F", nil
 }
