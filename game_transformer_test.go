@@ -184,7 +184,7 @@ func TestTransformRawInProgressGameBottomInning(t *testing.T) {
 	assertEqual(t, want, got)
 }
 
-func TestTransformRawFinishedGame(t *testing.T) {
+func assertTransformRawFinishedGame(t *testing.T, state string) {
 	rg := RawGame{
 		HomeName: "NYY",
 		AwayName: "BOS",
@@ -195,7 +195,7 @@ func TestTransformRawFinishedGame(t *testing.T) {
 			},
 		},
 		GameState: gameState{
-			State: "Final",
+			State: state,
 		},
 	}
 
@@ -206,6 +206,14 @@ func TestTransformRawFinishedGame(t *testing.T) {
 	}
 
 	assertEqual(t, want, got)
+}
+
+func TestTransformRawFinishedGame(t *testing.T) {
+	assertTransformRawFinishedGame(t, "Final")
+}
+
+func TestTransformRawGameOverGame(t *testing.T) {
+	assertTransformRawFinishedGame(t, "Game Over")
 }
 
 func TestParseGameTime(t *testing.T) {
