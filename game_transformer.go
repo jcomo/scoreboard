@@ -2,6 +2,8 @@ package main
 
 import (
 	"encoding/json"
+	"strconv"
+	"time"
 )
 
 type rawScoreboard struct {
@@ -114,4 +116,23 @@ func homeTeamStatus(rg RawGame) teamStatus {
 
 func awayTeamStatus(rg RawGame) teamStatus {
 	return newTeamStatus(rg.AwayName, intFromStr(rg.LineScore.Runs.Away))
+}
+
+// MLB sends everything as a string. We want a simple helper function to
+// parse an int but parse the int and return 0 on failure instead of an error.
+func intFromStr(s string) int {
+	i, err := strconv.Atoi(s)
+	if err != nil {
+		return 0
+	} else {
+		return i
+	}
+}
+
+// MLB sends game times in EST. We want to localize these to the user's
+// machine's timezone.
+func parseGameTime(gt string) time.Time {
+	estLoc, _ := time.LoadLocation("America/New_York")
+	t, _ := time.ParseInLocation("3:04PM", gt, estLoc)
+	return t.Local()
 }
