@@ -30,7 +30,7 @@ var inProgressGame = InProgressGame{
 }
 
 func TestStateForGameInProgress(t *testing.T) {
-	assertEqual(t, "PHI 2 - 5 WSH T7", inProgressGame.State())
+	assertEqual(t, "PHI 2 - 5 WSH ↑7", inProgressGame.State())
 }
 
 func TestHomeTeamForInProgressGame(t *testing.T) {
@@ -60,8 +60,8 @@ func TestAwayTeamForFinishedGame(t *testing.T) {
 
 func TestInningString(t *testing.T) {
 	bi := bottomInning(5)
-	assertEqual(t, "B5", bi.String())
+	assertEqual(t, "↓5", bi.String())
 
 	ti := topInning(4)
-	assertEqual(t, "T4", ti.String())
+	assertEqual(t, "↑4", ti.String())
 }

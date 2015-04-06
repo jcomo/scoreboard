@@ -35,7 +35,7 @@ func TestGet(t *testing.T) {
 		"SF 2 - 1 OAK F",
 		"CHC 2 - 4 ARI F",
 		"MEX 0 - 8 SD F",
-		"LAA 6 - 5 LAD T8",
+		"LAA 6 - 5 LAD ↑8",
 	}
 
 	sb := NewScoreboard(DefaultFixtureClient())
@@ -57,12 +57,12 @@ func TestGetTeam(t *testing.T) {
 	assertNoError(t, err)
 	assertEqual(t, want, got)
 
-	want = "LAA 6 - 5 LAD T8"
+	want = "LAA 6 - 5 LAD ↑8"
 	got, err = sb.GetTeam(testDate, "LAA")
 	assertNoError(t, err)
 	assertEqual(t, want, got)
 
-	want = "LAA 6 - 5 LAD T8"
+	want = "LAA 6 - 5 LAD ↑8"
 	got, err = sb.GetTeam(testDate, "LAD")
 	assertNoError(t, err)
 	assertEqual(t, want, got)

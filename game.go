@@ -104,8 +104,8 @@ func topInning(number int) inning {
 
 func (i inning) String() string {
 	if i.top {
-		return fmt.Sprintf("T%d", i.number)
+		return fmt.Sprintf("↑%d", i.number)
 	} else {
-		return fmt.Sprintf("B%d", i.number)
+		return fmt.Sprintf("↓%d", i.number)
 	}
 }
