@@ -44,14 +44,3 @@ Scoreboard will display the score and state of the game if it is currently in
 play. If there is no game in play for a team, scoreboard will show the upcoming
 game in the schedule instead.
 
-When a team is specified, the upcoming game will be displayed with respect to
-the team.
-
-This behavior is not yet implemented.
-
-For example,
-
-```
-BOS vs NYY 7:05PM
-NYY @ OAK 1:05PM
-```
