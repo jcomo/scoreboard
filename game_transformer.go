@@ -73,12 +73,12 @@ func GamesFromRaw(rgs []RawGame) []Game {
 }
 
 func GameFromRaw(rg RawGame) Game {
-	if rg.GameState.State == "Preview" {
-		return upcomingGameFromRaw(rg)
-	} else if rg.GameState.State == "Final" {
+	if rg.GameState.State == "Final" {
 		return finishedGameFromRaw(rg)
-	} else {
+	} else if rg.GameState.State == "In Progress" {
 		return inProgressGameFromRaw(rg)
+	} else {
+		return upcomingGameFromRaw(rg)
 	}
 }
 
