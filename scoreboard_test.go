@@ -21,21 +21,21 @@ func assertNoError(t *testing.T, err error) {
 
 func TestGet(t *testing.T) {
 	want := []string{
-		"DET 1 - 0 TB F",
-		"BOS 4 - 2 MIN F",
-		"NYY 4 - 3 WSH F",
-		"PIT 4 - 6 PHI F",
-		"CIN 1 - 9 TOR F",
-		"MIA 8 - 14 JAX F",
-		"NYM 4 - 4 TEX F",
-		"BAL 3 - 5 ATL F",
-		"CLE 3 - 4 MIL F",
-		"SEA 6 - 3 COL F",
-		"KC 3 - 1 HOU F",
-		"SF 2 - 1 OAK F",
-		"CHC 2 - 4 ARI F",
-		"MEX 0 - 8 SD F",
-		"LAA 6 - 5 LAD ↑8",
+		"DET 1 • 0 TB F",
+		"BOS 4 • 2 MIN F",
+		"NYY 4 • 3 WSH F",
+		"PIT 4 • 6 PHI F",
+		"CIN 1 • 9 TOR F",
+		"MIA 8 • 14 JAX F",
+		"NYM 4 • 4 TEX F",
+		"BAL 3 • 5 ATL F",
+		"CLE 3 • 4 MIL F",
+		"SEA 6 • 3 COL F",
+		"KC 3 • 1 HOU F",
+		"SF 2 • 1 OAK F",
+		"CHC 2 • 4 ARI F",
+		"MEX 0 • 8 SD F",
+		"LAA 6 • 5 LAD ↑8",
 	}
 
 	sb := NewScoreboard(DefaultFixtureClient())
@@ -52,17 +52,17 @@ func TestGet(t *testing.T) {
 func TestGetTeam(t *testing.T) {
 	sb := NewScoreboard(DefaultFixtureClient())
 
-	want := "NYY 4 - 3 WSH F"
+	want := "NYY 4 • 3 WSH F"
 	got, err := sb.GetTeam(testDate, "NYY")
 	assertNoError(t, err)
 	assertEqual(t, want, got)
 
-	want = "LAA 6 - 5 LAD ↑8"
+	want = "LAA 6 • 5 LAD ↑8"
 	got, err = sb.GetTeam(testDate, "LAA")
 	assertNoError(t, err)
 	assertEqual(t, want, got)
 
-	want = "LAA 6 - 5 LAD ↑8"
+	want = "LAA 6 • 5 LAD ↑8"
 	got, err = sb.GetTeam(testDate, "LAD")
 	assertNoError(t, err)
 	assertEqual(t, want, got)
