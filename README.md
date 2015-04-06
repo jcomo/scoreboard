@@ -32,7 +32,7 @@ The specified team should be the abbreviation (eg. NYY). This is case
 insensitive.
 
 ```sh
-$ scoreboard -team nyy
+$ scoreboard -team=nyy
 
 NYY 5 • 3 BOS ↓4
 ```
