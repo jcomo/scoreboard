@@ -21,7 +21,7 @@ The basic usage of scoreboard is to run the program with no arguments
 $ scoreboard
 
 NYY vs BOS 7:05PM
-SF 4 - 1 OAK T9 
+SF 4 • 1 OAK ↑9 
 # ...
 ```
 
@@ -34,7 +34,7 @@ insensitive.
 ```sh
 $ scoreboard -team nyy
 
-NYY 5 - 3 BOS B4
+NYY 5 • 3 BOS ↓4
 ```
 
 
