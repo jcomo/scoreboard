@@ -44,7 +44,7 @@ type gameState struct {
 
 // Need a special helper to unmarshal games because if there is a list of
 // games, it is returned as an array, but if there is only one game it is
-// and object.
+// an object.
 func unmarshalGames(gd json.RawMessage) ([]RawGame, error) {
 	var gs []RawGame
 
@@ -55,7 +55,8 @@ func unmarshalGames(gd json.RawMessage) ([]RawGame, error) {
 
 		e = json.Unmarshal(gd, &g)
 		if e != nil {
-			return nil, e
+			// No games at all
+			return []RawGame{}, nil
 		}
 
 		gs = make([]RawGame, 1)
