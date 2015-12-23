@@ -2,13 +2,16 @@ package main
 
 import (
 	"time"
+
+	"github.com/jcomo/scoreboard/mlb"
 )
 
 type Scoreboard struct {
-	Client Client
+	Client mlb.Client
 }
 
-func NewScoreboard(c Client) *Scoreboard {
+// TODO: this shouldnt take a client
+func NewScoreboard(c mlb.Client) *Scoreboard {
 	return &Scoreboard{
 		Client: c,
 	}

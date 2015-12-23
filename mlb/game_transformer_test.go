@@ -1,9 +1,11 @@
-package main
+package mlb
 
 import (
 	"encoding/json"
 	"testing"
 	"time"
+
+	"github.com/jcomo/scoreboard/assert"
 )
 
 func makeGameTime(gt string) time.Time {
@@ -53,8 +55,8 @@ func TestRawGameUnmarshalling(t *testing.T) {
 	got := RawGame{}
 	err := json.Unmarshal([]byte(rgData), &got)
 
-	assertNoError(t, err)
-	assertEqual(t, want, got)
+	assert.NoError(t, err)
+	assert.Equal(t, want, got)
 }
 
 func TestUnmarshalGamesWithSingleGame(t *testing.T) {
@@ -102,10 +104,10 @@ func TestUnmarshalGamesWithGamesList(t *testing.T) {
 func assertGameListUnmarshals(t *testing.T, gd string, want []RawGame) {
 	got, err := unmarshalGames(json.RawMessage(gd))
 
-	assertNoError(t, err)
-	assertEqual(t, len(want), len(got))
+	assert.NoError(t, err)
+	assert.Equal(t, len(want), len(got))
 	for i, g := range got {
-		assertEqual(t, want[i], g)
+		assert.Equal(t, want[i], g)
 	}
 }
 
@@ -122,12 +124,12 @@ func TestTransformRawUpcomingGame(t *testing.T) {
 
 	got := GameFromRaw(rg)
 	want := UpcomingGame{
-		home: "NYY",
-		away: "BOS",
-		time: makeGameTime("7:05PM"),
+		Home: "NYY",
+		Away: "BOS",
+		Time: makeGameTime("7:05PM"),
 	}
 
-	assertEqual(t, want.State(), got.State())
+	assert.Equal(t, want.State(), got.State())
 }
 
 func TestTransformRawInProgressGameTopInning(t *testing.T) {
@@ -149,12 +151,12 @@ func TestTransformRawInProgressGameTopInning(t *testing.T) {
 
 	got := GameFromRaw(rg)
 	want := InProgressGame{
-		home:   newTeamStatus("NYY", 6),
-		away:   newTeamStatus("BOS", 5),
-		inning: topInning(7),
+		Home:   NewTeamStatus("NYY", 6),
+		Away:   NewTeamStatus("BOS", 5),
+		Inning: TopInning(7),
 	}
 
-	assertEqual(t, want, got)
+	assert.Equal(t, want, got)
 }
 
 func TestTransformRawInProgressGameBottomInning(t *testing.T) {
@@ -176,12 +178,12 @@ func TestTransformRawInProgressGameBottomInning(t *testing.T) {
 
 	got := GameFromRaw(rg)
 	want := InProgressGame{
-		home:   newTeamStatus("NYY", 6),
-		away:   newTeamStatus("BOS", 5),
-		inning: bottomInning(7),
+		Home:   NewTeamStatus("NYY", 6),
+		Away:   NewTeamStatus("BOS", 5),
+		Inning: BottomInning(7),
 	}
 
-	assertEqual(t, want, got)
+	assert.Equal(t, want, got)
 }
 
 func assertTransformRawFinishedGame(t *testing.T, state string) {
@@ -201,11 +203,11 @@ func assertTransformRawFinishedGame(t *testing.T, state string) {
 
 	got := GameFromRaw(rg)
 	want := FinishedGame{
-		home: newTeamStatus("NYY", 6),
-		away: newTeamStatus("BOS", 5),
+		Home: NewTeamStatus("NYY", 6),
+		Away: NewTeamStatus("BOS", 5),
 	}
 
-	assertEqual(t, want, got)
+	assert.Equal(t, want, got)
 }
 
 func TestTransformRawFinishedGame(t *testing.T) {
@@ -220,12 +222,12 @@ func TestParseGameTime(t *testing.T) {
 	localTime := makeGameTime("7:05PM").Local()
 	gameTime := parseGameTime("7:05PM")
 
-	assertEqual(t, localTime.Hour(), gameTime.Hour())
-	assertEqual(t, localTime.Minute(), gameTime.Minute())
+	assert.Equal(t, localTime.Hour(), gameTime.Hour())
+	assert.Equal(t, localTime.Minute(), gameTime.Minute())
 }
 
 func TestIntFromString(t *testing.T) {
-	assertEqual(t, 0, intFromStr(""))
-	assertEqual(t, 0, intFromStr("bogus"))
-	assertEqual(t, 8, intFromStr("8"))
+	assert.Equal(t, 0, intFromStr(""))
+	assert.Equal(t, 0, intFromStr("bogus"))
+	assert.Equal(t, 8, intFromStr("8"))
 }

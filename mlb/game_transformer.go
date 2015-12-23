@@ -1,4 +1,4 @@
-package main
+package mlb
 
 import (
 	"encoding/json"
@@ -89,17 +89,17 @@ func GameFromRaw(rg RawGame) Game {
 
 func upcomingGameFromRaw(rg RawGame) Game {
 	return UpcomingGame{
-		home: rg.HomeName,
-		away: rg.AwayName,
-		time: parseGameTime(rg.Time + rg.AmOrPm),
+		Home: rg.HomeName,
+		Away: rg.AwayName,
+		Time: parseGameTime(rg.Time + rg.AmOrPm),
 	}
 }
 
 func inProgressGameFromRaw(rg RawGame) Game {
 	return InProgressGame{
-		home: homeTeamStatus(rg),
-		away: awayTeamStatus(rg),
-		inning: inning{
+		Home: homeTeamStatus(rg),
+		Away: awayTeamStatus(rg),
+		Inning: Inning{
 			number: intFromStr(rg.GameState.Inning),
 			top:    rg.GameState.InningState == "Top",
 		},
@@ -108,17 +108,17 @@ func inProgressGameFromRaw(rg RawGame) Game {
 
 func finishedGameFromRaw(rg RawGame) Game {
 	return FinishedGame{
-		home: homeTeamStatus(rg),
-		away: awayTeamStatus(rg),
+		Home: homeTeamStatus(rg),
+		Away: awayTeamStatus(rg),
 	}
 }
 
-func homeTeamStatus(rg RawGame) teamStatus {
-	return newTeamStatus(rg.HomeName, intFromStr(rg.LineScore.Runs.Home))
+func homeTeamStatus(rg RawGame) TeamStatus {
+	return NewTeamStatus(rg.HomeName, intFromStr(rg.LineScore.Runs.Home))
 }
 
-func awayTeamStatus(rg RawGame) teamStatus {
-	return newTeamStatus(rg.AwayName, intFromStr(rg.LineScore.Runs.Away))
+func awayTeamStatus(rg RawGame) TeamStatus {
+	return NewTeamStatus(rg.AwayName, intFromStr(rg.LineScore.Runs.Away))
 }
 
 // MLB sends everything as a string. We want a simple helper function to

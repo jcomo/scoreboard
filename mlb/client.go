@@ -1,4 +1,4 @@
-package main
+package mlb
 
 import (
 	"encoding/json"

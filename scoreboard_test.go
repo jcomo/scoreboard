@@ -3,78 +3,69 @@ package main
 import (
 	"testing"
 	"time"
+
+	"github.com/jcomo/scoreboard/assert"
+	"github.com/jcomo/scoreboard/mlb"
 )
 
 var testDate = time.Date(2015, 4, 4, 0, 0, 0, 0, time.Local)
 
-func assertEqual(t *testing.T, want, got interface{}) {
-	if got != want {
-		t.Errorf("Expected %v, got %v", want, got)
-	}
+type fakeClient struct {
 }
 
-func assertNoError(t *testing.T, err error) {
-	if err != nil {
-		t.Errorf("Unexpected error: %v", err)
+func (c *fakeClient) FetchGames(day time.Time) ([]mlb.Game, error) {
+	games := []mlb.Game{
+		mlb.FinishedGame{
+			Home: mlb.NewTeamStatus("TB", 0),
+			Away: mlb.NewTeamStatus("DET", 1),
+		},
+		mlb.InProgressGame{
+			Home:   mlb.NewTeamStatus("LAD", 5),
+			Away:   mlb.NewTeamStatus("LAA", 6),
+			Inning: mlb.TopInning(8),
+		},
 	}
+
+	return games, nil
 }
 
 func TestGet(t *testing.T) {
 	want := []string{
 		"DET 1 • 0 TB F",
-		"BOS 4 • 2 MIN F",
-		"NYY 4 • 3 WSH F",
-		"PIT 4 • 6 PHI F",
-		"CIN 1 • 9 TOR F",
-		"MIA 8 • 14 JAX F",
-		"NYM 4 • 4 TEX F",
-		"BAL 3 • 5 ATL F",
-		"CLE 3 • 4 MIL F",
-		"SEA 6 • 3 COL F",
-		"KC 3 • 1 HOU F",
-		"SF 2 • 1 OAK F",
-		"CHC 2 • 4 ARI F",
-		"MEX 0 • 8 SD F",
 		"LAA 6 • 5 LAD ↑8",
 	}
 
-	sb := NewScoreboard(DefaultFixtureClient())
+	sb := NewScoreboard(&fakeClient{})
 
 	got, err := sb.Get(testDate)
 
-	assertNoError(t, err)
-	assertEqual(t, len(want), len(got))
+	assert.NoError(t, err)
+	assert.Equal(t, len(want), len(got))
 	for i, g := range got {
-		assertEqual(t, want[i], g)
+		assert.Equal(t, want[i], g)
 	}
 }
 
 func TestGetTeam(t *testing.T) {
-	sb := NewScoreboard(DefaultFixtureClient())
+	sb := NewScoreboard(&fakeClient{})
 
-	want := "NYY 4 • 3 WSH F"
-	got, err := sb.GetTeam(testDate, "NYY")
-	assertNoError(t, err)
-	assertEqual(t, want, got)
+	want := "DET 1 • 0 TB F"
+	got, err := sb.GetTeam(testDate, "DET")
+	assert.NoError(t, err)
+	assert.Equal(t, want, got)
 
-	want = "LAA 6 • 5 LAD ↑8"
-	got, err = sb.GetTeam(testDate, "LAA")
-	assertNoError(t, err)
-	assertEqual(t, want, got)
-
-	want = "LAA 6 • 5 LAD ↑8"
-	got, err = sb.GetTeam(testDate, "LAD")
-	assertNoError(t, err)
-	assertEqual(t, want, got)
+	want = "DET 1 • 0 TB F"
+	got, err = sb.GetTeam(testDate, "TB")
+	assert.NoError(t, err)
+	assert.Equal(t, want, got)
 }
 
 func TestGetTeamForNoTeamFound(t *testing.T) {
-	sb := NewScoreboard(DefaultFixtureClient())
+	sb := NewScoreboard(&fakeClient{})
 
 	want := "No games for BAD"
 	got, err := sb.GetTeam(testDate, "BAD")
 
-	assertNoError(t, err)
-	assertEqual(t, want, got)
-
+	assert.NoError(t, err)
+	assert.Equal(t, want, got)
 }

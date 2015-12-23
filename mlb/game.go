@@ -1,4 +1,4 @@
-package main
+package mlb
 
 import (
 	"fmt"
@@ -12,97 +12,97 @@ type Game interface {
 }
 
 type UpcomingGame struct {
-	home string
-	away string
-	time time.Time
+	Home string
+	Away string
+	Time time.Time
 }
 
 func (g UpcomingGame) State() string {
-	return fmt.Sprintf("%s vs %s %s", g.away, g.home,
-		g.time.Local().Format("3:04PM"))
+	return fmt.Sprintf("%s vs %s %s", g.Away, g.Home,
+		g.Time.Local().Format("3:04PM"))
 }
 
 func (g UpcomingGame) HomeTeam() string {
-	return g.home
+	return g.Home
 }
 
 func (g UpcomingGame) AwayTeam() string {
-	return g.away
+	return g.Away
 }
 
 type InProgressGame struct {
-	home   teamStatus
-	away   teamStatus
-	inning inning
+	Home   TeamStatus
+	Away   TeamStatus
+	Inning Inning
 }
 
 func (g InProgressGame) State() string {
 	return fmt.Sprintf("%s %d • %d %s %s",
-		g.away.abbrev, g.away.score, g.home.score, g.home.abbrev, g.inning)
+		g.Away.Abbrev, g.Away.Score, g.Home.Score, g.Home.Abbrev, g.Inning)
 }
 
 func (g InProgressGame) HomeTeam() string {
-	return g.home.teamName()
+	return g.Home.teamName()
 }
 
 func (g InProgressGame) AwayTeam() string {
-	return g.away.teamName()
+	return g.Away.teamName()
 }
 
 type FinishedGame struct {
-	home teamStatus
-	away teamStatus
+	Home TeamStatus
+	Away TeamStatus
 }
 
 func (g FinishedGame) State() string {
 	return fmt.Sprintf("%s %d • %d %s F",
-		g.away.abbrev, g.away.score, g.home.score, g.home.abbrev)
+		g.Away.Abbrev, g.Away.Score, g.Home.Score, g.Home.Abbrev)
 }
 
 func (g FinishedGame) HomeTeam() string {
-	return g.home.teamName()
+	return g.Home.teamName()
 }
 
 func (g FinishedGame) AwayTeam() string {
-	return g.away.teamName()
+	return g.Away.teamName()
 }
 
-type teamStatus struct {
-	abbrev string
-	score  int
+type TeamStatus struct {
+	Abbrev string
+	Score  int
 }
 
-func (ts teamStatus) teamName() string {
-	return ts.abbrev
+func (ts TeamStatus) teamName() string {
+	return ts.Abbrev
 }
 
-func newTeamStatus(abbrev string, score int) teamStatus {
-	return teamStatus{
-		abbrev: abbrev,
-		score:  score,
+func NewTeamStatus(abbrev string, score int) TeamStatus {
+	return TeamStatus{
+		Abbrev: abbrev,
+		Score:  score,
 	}
 }
 
-type inning struct {
+type Inning struct {
 	number int
 	top    bool
 }
 
-func bottomInning(number int) inning {
-	return inning{
+func BottomInning(number int) Inning {
+	return Inning{
 		number: number,
 		top:    false,
 	}
 }
 
-func topInning(number int) inning {
-	return inning{
+func TopInning(number int) Inning {
+	return Inning{
 		number: number,
 		top:    true,
 	}
 }
 
-func (i inning) String() string {
+func (i Inning) String() string {
 	if i.top {
 		return fmt.Sprintf("↑%d", i.number)
 	} else {
