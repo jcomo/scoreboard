@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+	"os"
 	"time"
 
 	"github.com/jcomo/scoreboard/mlb"
@@ -8,12 +10,13 @@ import (
 
 type Scoreboard struct {
 	Client mlb.Client
+	Logger *log.Logger
 }
 
-// TODO: this shouldnt take a client
 func NewScoreboard() *Scoreboard {
 	return &Scoreboard{
 		Client: mlb.DefaultHttpClient(),
+		Logger: log.New(os.Stdout, "[SCOREBOARD] ", log.Ldate|log.Ltime|log.Lshortfile),
 	}
 }
 
