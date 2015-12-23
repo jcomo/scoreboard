@@ -23,6 +23,7 @@ func NewScoreboard() *Scoreboard {
 func (sb *Scoreboard) Get(day time.Time) ([]string, error) {
 	games, err := sb.Client.FetchGames(day)
 	if err != nil {
+		sb.Logger.Println(err)
 		return nil, err
 	}
 
@@ -37,6 +38,7 @@ func (sb *Scoreboard) Get(day time.Time) ([]string, error) {
 func (sb *Scoreboard) GetTeam(day time.Time, team string) (string, error) {
 	games, err := sb.Client.FetchGames(day)
 	if err != nil {
+		sb.Logger.Println(err)
 		return "", err
 	}
 

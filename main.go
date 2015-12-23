@@ -36,7 +36,7 @@ func printCurrentStatus(sb *Scoreboard) {
 func main() {
 	teamFlag := flag.String("team", "", "Team to focus on (eg. NYY)")
 	outFlag := flag.String("log-file", "", "File to send log output")
-	prefixFlag := flag.String("log-prefix", "[SCOREBOARD]", "Prefix to apply to logs")
+	prefixFlag := flag.String("log-prefix", "scoreboard", "Prefix to apply to logs")
 	flag.Parse()
 
 	sb := NewScoreboard()

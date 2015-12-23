@@ -15,24 +15,23 @@ func makeGameTime(gt string) time.Time {
 }
 
 func TestRawGameUnmarshalling(t *testing.T) {
-	rgData := `
-    {
-        "time": "7:05",
-        "ampm": "PM",
-        "home_name_abbrev": "NYY",
-        "away_name_abbrev": "BOS",
-        "linescore": {
-            "r": {
-                "home": "10",
-                "away": "1"
-            }
-        },
-        "status": {
-            "status": "In Progress",
-            "inning": "8",
-            "inning_state": "Top"
-        }
-    }`
+	rgData := `{
+		"time": "7:05",
+		"ampm": "PM",
+		"home_name_abbrev": "NYY",
+		"away_name_abbrev": "BOS",
+		"linescore": {
+			"r": {
+				"home": "10",
+				"away": "1"
+			}
+		},
+		"status": {
+			"status": "In Progress",
+			"inning": "8",
+			"inning_state": "Top"
+		}
+	}`
 
 	want := RawGame{
 		Time:     "7:05",
@@ -77,14 +76,14 @@ func TestUnmarshalGamesWithSingleGame(t *testing.T) {
 
 func TestUnmarshalGamesWithGamesList(t *testing.T) {
 	gameList := `[
-		{
-			"home_name_abbrev": "NYY",
-			"away_name_abbrev": "BOS"
-		},
-		{
-			"home_name_abbrev": "OAK",
-			"away_name_abbrev": "LAA"
-		}
+	{
+		"home_name_abbrev": "NYY",
+		"away_name_abbrev": "BOS"
+	},
+	{
+		"home_name_abbrev": "OAK",
+		"away_name_abbrev": "LAA"
+	}
 	]`
 
 	want := []RawGame{
@@ -212,9 +211,6 @@ func assertTransformRawFinishedGame(t *testing.T, state string) {
 
 func TestTransformRawFinishedGame(t *testing.T) {
 	assertTransformRawFinishedGame(t, "Final")
-}
-
-func TestTransformRawGameOverGame(t *testing.T) {
 	assertTransformRawFinishedGame(t, "Game Over")
 }
 
