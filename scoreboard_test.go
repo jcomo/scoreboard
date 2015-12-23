@@ -8,10 +8,9 @@ import (
 	"github.com/jcomo/scoreboard/mlb"
 )
 
-var testDate = time.Date(2015, 4, 4, 0, 0, 0, 0, time.Local)
+var someDate = time.Date(2015, 8, 10, 0, 0, 0, 0, time.Local)
 
-type fakeClient struct {
-}
+type fakeClient struct{}
 
 func (c *fakeClient) FetchGames(day time.Time) ([]mlb.Game, error) {
 	games := []mlb.Game{
@@ -35,9 +34,10 @@ func TestGet(t *testing.T) {
 		"LAA 6 • 5 LAD ↑8",
 	}
 
-	sb := NewScoreboard(&fakeClient{})
+	sb := NewScoreboard()
+	sb.Client = &fakeClient{}
 
-	got, err := sb.Get(testDate)
+	got, err := sb.Get(someDate)
 
 	assert.NoError(t, err)
 	assert.Equal(t, len(want), len(got))
@@ -47,24 +47,26 @@ func TestGet(t *testing.T) {
 }
 
 func TestGetTeam(t *testing.T) {
-	sb := NewScoreboard(&fakeClient{})
+	sb := NewScoreboard()
+	sb.Client = &fakeClient{}
 
 	want := "DET 1 • 0 TB F"
-	got, err := sb.GetTeam(testDate, "DET")
+	got, err := sb.GetTeam(someDate, "DET")
 	assert.NoError(t, err)
 	assert.Equal(t, want, got)
 
 	want = "DET 1 • 0 TB F"
-	got, err = sb.GetTeam(testDate, "TB")
+	got, err = sb.GetTeam(someDate, "TB")
 	assert.NoError(t, err)
 	assert.Equal(t, want, got)
 }
 
 func TestGetTeamForNoTeamFound(t *testing.T) {
-	sb := NewScoreboard(&fakeClient{})
+	sb := NewScoreboard()
+	sb.Client = &fakeClient{}
 
 	want := "No games for BAD"
-	got, err := sb.GetTeam(testDate, "BAD")
+	got, err := sb.GetTeam(someDate, "BAD")
 
 	assert.NoError(t, err)
 	assert.Equal(t, want, got)

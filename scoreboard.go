@@ -11,9 +11,9 @@ type Scoreboard struct {
 }
 
 // TODO: this shouldnt take a client
-func NewScoreboard(c mlb.Client) *Scoreboard {
+func NewScoreboard() *Scoreboard {
 	return &Scoreboard{
-		Client: c,
+		Client: mlb.DefaultHttpClient(),
 	}
 }
 

@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"strings"
 	"time"
-
-	"github.com/jcomo/scoreboard/mlb"
 )
 
 func printCurrentTeamStatus(sb *Scoreboard, team string) {
@@ -37,7 +35,7 @@ func main() {
 	teamFlag := flag.String("team", "", "Team to focus on (eg. NYY)")
 	flag.Parse()
 
-	sb := NewScoreboard(mlb.DefaultHttpClient())
+	sb := NewScoreboard()
 	team := strings.ToUpper(*teamFlag)
 	if team != "" {
 		printCurrentTeamStatus(sb, team)
